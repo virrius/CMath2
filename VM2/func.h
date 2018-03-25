@@ -6,8 +6,11 @@
 
 
 
-
+void QR(Matrix &A, Matrix &Q, Matrix &R);
 void FindLeadElement(Matrix &A, Matrix &PC, Matrix &PR);
 void Solve(Matrix &L, Matrix &U, Matrix &B, Matrix &X);
 void PLU(Matrix &A, Matrix &L, Matrix &U, Matrix &PC, Matrix &PR);
 Matrix inverse(Matrix &A);
+void SolveQR(Matrix &A, Matrix &B, Matrix &X);
+void SolveJacobi(Matrix &A, Matrix &B, Matrix &X);
+void SolveZ(Matrix &A, Matrix &B, Matrix &X);

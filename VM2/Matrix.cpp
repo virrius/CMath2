@@ -13,6 +13,10 @@ Matrix::Matrix(int M, int N):dimM(M), dimN(N)
 		for (int j = 0; j < dimN; j++)
 			mas[i][j] = 0;
 }
+//Matrix::~Matrix()
+//{
+//delete[] mas;
+//}
 void Matrix::show()const
 {
 
@@ -43,6 +47,20 @@ bool Matrix::operator==(const Matrix &A)
 	return true;
 
 }
+void Matrix::randomDP()
+{
+	for (int i = 0; i < dimM; i++)
+	{
+		double sum = 0;
+		for (int j = 0; j < dimN; j++)
+		{
+			mas[i][j] = rand() % 100 - 50;
+			if(i!=j)
+				sum += abs(mas[i][j]);
+		}
+		mas[i][i] =abs(mas[i][i])+ sum;
+	}
+}
 const Matrix Matrix::operator=(const Matrix &A)
 {
 	for (int i = 0; i < A.dimM; i++)
@@ -51,7 +69,7 @@ const Matrix Matrix::operator=(const Matrix &A)
 	return *this;
 }
 
-Matrix Matrix::operator*(Matrix &A)
+Matrix Matrix::operator*(const Matrix &A)
 {
 	Matrix temp(dimM, A.dimN);
 	for (int i = 0; i < dimM; i++)
@@ -60,8 +78,24 @@ Matrix Matrix::operator*(Matrix &A)
 			{
 
 
-				temp.mas[i][j] += mas[i][k] * A[k][j];
+				temp[i][j] += mas[i][k] * A[k][j];
 			}
+	return temp;
+}
+Matrix Matrix::operator*(double K)
+{
+	Matrix temp(dimM, dimN);
+	for (int i = 0; i < dimM; i++)
+		for (int j = 0; j < dimN; j++)
+			temp[i][j] =mas[i][j]* K;
+	return temp;
+}
+Matrix Matrix::operator+(const Matrix & A)
+{
+	Matrix temp(dimM, dimN);
+	for (int i = 0; i < dimM; i++)
+		for (int j = 0; j < dimN; j++)
+			temp[i][j] = mas[i][j] +A[i][j];
 	return temp;
 }
 void Matrix::SwapRows(int f, int s)
@@ -95,7 +129,7 @@ Matrix Matrix::Transpose()
 	for (int i = 0; i < dimM; i++)
 		for (int j = 0; j < i; j++)
 		{
-			std::swap(tmp.mas[i][j], tmp.mas[j][i]);
+			std::swap(tmp[i][j], tmp[j][i]);
 		}
 	return tmp;
 }
@@ -103,12 +137,12 @@ double Matrix::CondNum()
 {
 	return this->Norm()*inverse(*this).Norm();
 }
-double Matrix::Determinant(Matrix &U)
+double Matrix::Determinant()
 {
-	double det = U.sign;
-	for (int i = 0; i < U.dimM; i++)
+	double det = sign;
+	for (int i = 0; i < dimM; i++)
 	{
-		det *= U[i][i];
+		det *= mas[i][i];
 	}
 
 	return det;

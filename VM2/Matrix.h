@@ -1,7 +1,7 @@
 #pragma once
 
 
-const double E = 0.00000001;
+const double E = 0.0000001;
 class Matrix {
 	double **mas;
 	int sign = 1;
@@ -21,9 +21,9 @@ public:
 	//			mas[i][j] = 0;
 	//}
 	Matrix(int M, int N);
-
+	//Matrix::~Matrix();
 	void show()const;
-	double* operator[](int i)
+	double* operator[](int i)const
 	{
 		return mas[i];
 	}
@@ -31,8 +31,10 @@ public:
 	
 	const Matrix operator=(const Matrix &A);
 	
-	Matrix operator*(Matrix &A);
-	
+	Matrix operator*(const Matrix &A);
+	Matrix operator*(double K);
+	Matrix operator+(const Matrix &A);
+	void randomDP();
 	void random() {
 		for (int i = 0; i < dimM; i++)
 			for (int j = 0; j < dimN; j++)
@@ -40,15 +42,19 @@ public:
 	}
 	void Identity() {
 		for (int i = 0; i < dimM; i++)
-		{
-			mas[i][i] = 1;
-		}
+			for (int j = 0; j < dimN; j++)
+				if (i == j)
+					mas[i][j] = 1;
+				else
+				{
+					mas[i][j] = 0;
+				}
 	}
 	void SwapRows(int f, int s);	
 	void SwapCol(int f, int s);
 	
 	Matrix Transpose();
-	double Determinant(Matrix &U);
+	double Determinant();
 	int Rank(Matrix &U);	
 	double CondNum();
 	double Norm();
@@ -124,24 +130,36 @@ public:
 	void ExSLAEA()
 	{
 
-		mas[0][0] = 2;
+		mas[0][0] = 8;
 		mas[0][1] = 1;
 		mas[0][2] = 1;
 		mas[1][0] = 1;
-		mas[1][1] = -1;
-		mas[1][2] = 0;
-		mas[2][0] = 3;
-		mas[2][1] = -1;
-		mas[2][2] = 2;
+		mas[1][1] = 10;
+		mas[1][2] = 1;
+		mas[2][0] = 1;
+		mas[2][1] = 1;
+		mas[2][2] = 12;
+	
 	}
 	void ExSLAEB()
 	{
 
-		mas[0][0] = 2;
-		mas[1][0] = -2;
-		mas[2][0] = 2;
+		mas[0][0] = 10;
+		mas[1][0] = 12;
+		mas[2][0] = 14;
 	}
-	
+	void EXJac()
+	{
+		mas[0][0] = 2;
+		mas[0][1] = -1;
+		mas[0][2] = 0;
+		mas[1][0] = -1;
+		mas[1][1] = 2;
+		mas[1][2] = -1;
+		mas[2][0] = 0;
+		mas[2][1] = -1;
+		mas[2][2] = 2;
+	}
 	
 	
 };

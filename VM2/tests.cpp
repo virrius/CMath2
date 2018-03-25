@@ -44,7 +44,7 @@ std::string testSolve(int dim, bool debug)
 		std::cout << " Matrix A*X";
 		(PR*A*PC*X).show();
 		std::cout << " Matrix B";
-		(PR.Transpose()*B).show();
+		B.show();
 
 
 	}
@@ -83,4 +83,111 @@ std::string testPLU(int dimM, int dimN, bool debug)
 		return "PLU ok\n";
 	else
 		return "PLU wrong\n";
+};
+std::string testSolveQR(int dimM, int dimN, bool debug)
+{
+	Matrix A(dimM, dimN), B(A.dimM, 1), X(A.dimM, 1);
+		
+	A.random();
+	B.random();
+
+		SolveQR(A, B, X);
+	if (debug)
+	{
+		std::cout << " matrix A\n";
+		A.show();
+	
+		std::cout << " matrix x\n";
+		X.show();
+		std::cout << " matrix AX \n";
+		(A*X).show();
+		std::cout << " matrix B\n";
+		B.show();
+		
+	}
+	if (A*X==B)
+		return "SolveQR ok\n";
+	else
+		return "SolveQR wrong\n";
+};
+std::string testQR(int dimM, int dimN, bool debug)
+{
+	Matrix A(dimM, dimN), Q(dimM, dimN), R(dimM, dimN);
+
+	A.random();
+
+
+	QR(A, Q, R);
+	if (debug)
+	{
+		std::cout << " matrix A\n";
+		A.show();
+
+
+		std::cout << " matrix Q \n";
+		Q.show();
+		std::cout << " matrix R \n";
+		R.show();
+		std::cout << " matrix QR \n";
+		(Q*R).show();
+		std::cout << " matrix A \n";
+		A.show();
+
+	}
+	if (A == Q*R)
+		return "QR ok\n";
+	else
+		return "QR wrong\n";
+};
+std::string testJacobi(int dimM, int dimN, bool debug)
+{
+	Matrix A(dimM, dimN), B(A.dimM, 1), X(A.dimM, 1);
+
+	A.randomDP();
+	B.random();
+
+	SolveJacobi(A, B, X);
+	if (debug)
+	{
+		std::cout << " matrix A\n";
+		A.show();
+
+		std::cout << " matrix x\n";
+		X.show();
+		std::cout << " matrix AX \n";
+		(A*X).show();
+		std::cout << " matrix B\n";
+		B.show();
+
+	}
+	if (A*X == B)
+		return "SolveJacobi ok\n";
+	else
+		return "SolveJacobi wrong\n";
+};
+std::string testZ(int dimM, int dimN, bool debug)
+{
+	Matrix A(dimM, dimN), B(A.dimM, 1), X(A.dimM, 1);
+
+	A.randomDP();
+	B.random();
+
+	SolveZ(A, B, X);
+	if (debug)
+	{
+		std::cout << " matrix A\n";
+		A.show();
+
+		std::cout << " matrix x\n";
+		X.show();
+		std::cout << " matrix AX \n";
+		(A*X).show();
+		std::cout << " matrix B\n";
+		B.show();
+
+	}
+	if (A*X == B)
+		return "SolveZ ok\n";
+	else
+		return "SolveZ wrong\n";
 };
