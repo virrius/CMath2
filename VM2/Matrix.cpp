@@ -17,6 +17,7 @@ Matrix::Matrix(int M, int N):dimM(M), dimN(N)
 //{
 //delete[] mas;
 //}
+
 void Matrix::show()const
 {
 
@@ -39,7 +40,7 @@ bool Matrix::operator==(const Matrix &A)
 
 	for (int i = 0; i < dimM; i++)
 		for (int j = 0; j < dimN; j++)
-			if (abs(mas[i][j] - A.mas[i][j]) >E)
+			if (abs(mas[i][j] - A.mas[i][j]) > E)
 			{
 
 				return false;
@@ -68,7 +69,10 @@ const Matrix Matrix::operator=(const Matrix &A)
 			mas[i][j] = A.mas[i][j];
 	return *this;
 }
-
+double* Matrix::operator[](int i)const
+{
+	return mas[i];
+}
 Matrix Matrix::operator*(const Matrix &A)
 {
 	Matrix temp(dimM, A.dimN);

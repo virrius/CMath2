@@ -1,7 +1,8 @@
 #pragma once
 
 
-const double E = 0.0000001;
+const double E = 0.00001;
+				
 class Matrix {
 	double **mas;
 	int sign = 1;
@@ -23,10 +24,7 @@ public:
 	Matrix(int M, int N);
 	//Matrix::~Matrix();
 	void show()const;
-	double* operator[](int i)const
-	{
-		return mas[i];
-	}
+	double* operator[](int i)const;
 	bool Matrix::operator==(const Matrix &A);
 	
 	const Matrix operator=(const Matrix &A);
@@ -152,13 +150,13 @@ public:
 	{
 		mas[0][0] = 2;
 		mas[0][1] = -1;
-		mas[0][2] = 0;
+		mas[0][2] = 2;
 		mas[1][0] = -1;
-		mas[1][1] = 2;
-		mas[1][2] = -1;
-		mas[2][0] = 0;
-		mas[2][1] = -1;
-		mas[2][2] = 2;
+		mas[1][1] = 1;
+		mas[1][2] = -3;
+		mas[2][0] = 2;
+		mas[2][1] = -3;
+		mas[2][2] = 11;
 	}
 	
 	

@@ -34,7 +34,7 @@ A.show();
 P.show();*/
 
 };
-void Solve(Matrix &L, Matrix &U, Matrix &B, Matrix &X)
+void SolvePLU(Matrix &L, Matrix &U, Matrix &B, Matrix &X)
 {
 	int n = B.dimM - 1;
 	Matrix Y(B.dimM, B.dimN);
@@ -77,18 +77,19 @@ void PLU(Matrix &A, Matrix &L, Matrix &U, Matrix &PC, Matrix &PR)
 
 	for (int k = 0; k < A.dimN; k++)
 	{
-
+		//  FindLead
 		for (int i = k; i < A.dimN; i++)
 		{
 
 			for (int j = i; j < A.dimM; j++)
 			{
-
+				//заполнятть текущий
 				L[j][i] = U[j][i] / U[i][i];
 			}
 		}
 		//std::cout << "matrix L " << k;
 		//L.show();
+		//U.show();
 
 		for (int i = k + 1; i < A.dimM; i++)
 			for (int j = k; j < A.dimN; j++)
@@ -110,7 +111,7 @@ Matrix inverse(Matrix &A)
 	{
 		if (i != 0)B[i - 1][0] = 0;
 		B[i][0] = 1;
-		Solve(L, U, B, Tmp);
+		SolvePLU(L, U, B, Tmp);
 		//std::cout << "TMP\n";
 		//Tmp.show();
 		for (int j = 0; j < A.dimM; j++)
@@ -163,7 +164,7 @@ void SolveQR(Matrix &A, Matrix &B, Matrix &X)
 	X = inverse(R)*Y;
 	//X.show();
 }
-void SolveJacobi(Matrix &A, Matrix &B, Matrix &X)
+void SolveJacobi(Matrix &A, Matrix &B, Matrix &X,int &Debug_Count)
 {
 	const double Eps =  0.00000001;
 	Matrix D(A.dimM, A.dimN), invD(D.dimM, D.dimN), G(D.dimM, 1), C(A.dimM, A.dimN),newX(X.dimM,X.dimN);
@@ -178,6 +179,7 @@ void SolveJacobi(Matrix &A, Matrix &B, Matrix &X)
 	C = invD*(D + A*(-1));
 	G = invD*B;
 	X = G;
+	Debug_Count = 0;
 	double norm;
 	do {
 		norm = 0;
@@ -193,11 +195,11 @@ void SolveJacobi(Matrix &A, Matrix &B, Matrix &X)
 		X = newX;
 		//X.show();
 
-
+		Debug_Count++;
 	} while (norm>Eps);	
-
+	
 }
-void SolveZ(Matrix &A, Matrix &B, Matrix &X)
+void SolveZ(Matrix &A, Matrix &B, Matrix &X, int &Debug_Count)
 {
 	const double Eps = 0.00000001;
 	Matrix D(A.dimM, A.dimN), U(D.dimM, D.dimN), L(D.dimM, D.dimN), invLD(A.dimM, A.dimN), newX(X.dimM, X.dimN);
@@ -211,6 +213,7 @@ void SolveZ(Matrix &A, Matrix &B, Matrix &X)
 	invLD = inverse(L + D);
 
 	double norm;
+	Debug_Count = 0;
 	do {
 		norm = 0;
 		newX = invLD*(U*(-1)*X + B);
@@ -222,5 +225,6 @@ void SolveZ(Matrix &A, Matrix &B, Matrix &X)
 		norm = sqrt(norm);
 
 		X = newX;
+		Debug_Count++;
 	} while (norm > Eps);
 }

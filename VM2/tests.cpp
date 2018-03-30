@@ -1,5 +1,5 @@
 #include"tests.h"
-
+#include<time.h>
 
 std::string testInv(int dimM, int dimN, bool debug)
 {
@@ -27,13 +27,13 @@ std::string testInv(int dimM, int dimN, bool debug)
 	else
 		return "Inv wrong\n";
 }
-std::string testSolve(int dim, bool debug)
+std::string testSolvePLU(int dim, bool debug)
 {
 	Matrix A(dim, dim), PR(dim, dim), PC(dim, dim), L(dim, dim), U(dim, dim), B(dim, 1), X(dim, 1);
 	A.random();
 	B.random();
 	PLU(A, L, U, PC, PR);
-	Solve(L, U, B, X);
+	SolvePLU(L, U, B, X);
 	if (debug)
 	{
 		std::cout << " Matrix A";
@@ -49,9 +49,9 @@ std::string testSolve(int dim, bool debug)
 
 	}
 	if (PR*A*PC*X == B)
-		return "Solve ok\n";
+		return "SolvePLU ok\n";
 	else
-		return "Solve wrong\n";
+		return "SolvePLU wrong\n";
 }
 std::string testPLU(int dimM, int dimN, bool debug)
 {
@@ -145,8 +145,8 @@ std::string testJacobi(int dimM, int dimN, bool debug)
 
 	A.randomDP();
 	B.random();
-
-	SolveJacobi(A, B, X);
+	int i;
+	SolveJacobi(A, B, X,i);
 	if (debug)
 	{
 		std::cout << " matrix A\n";
@@ -171,8 +171,8 @@ std::string testZ(int dimM, int dimN, bool debug)
 
 	A.randomDP();
 	B.random();
-
-	SolveZ(A, B, X);
+	int i;
+	SolveZ(A, B, X,i);
 	if (debug)
 	{
 		std::cout << " matrix A\n";
@@ -191,3 +191,42 @@ std::string testZ(int dimM, int dimN, bool debug)
 	else
 		return "SolveZ wrong\n";
 };
+void JacobiVsZ()
+{
+	Matrix A(8, 8), B(A.dimM, 1), X(A.dimM, 1);
+	clock_t	time;
+	double sec;
+	std::cout << "For matrix A,B \n";
+	A.randomDP();
+	A.show();
+
+	B.random();
+	B.show();
+	int i = 0;
+	
+	SolveZ(A, B, X, i);
+
+	std::cout << "count of Z " << i << std::endl;
+
+	SolveJacobi(A, B, X, i);
+	
+	std::cout << "count of Jacobi " << i << std::endl;
+	Matrix A1(3, 3), B1(A1.dimM, 1), X1(A1.dimM, 1);
+
+	std::cout << "For matrix A,B \n";
+	A1.EXJac();
+	A1.show();
+
+	B1.random();
+	B1.show();
+	
+	i = 0;
+	SolveZ(A1, B1, X1, i);
+	
+	std::cout << "count of Z " << i << std::endl
+
+;
+	SolveJacobi(A1, B1, X1, i);
+
+	std::cout << "count of Jacobi " << i << std::endl;
+}
