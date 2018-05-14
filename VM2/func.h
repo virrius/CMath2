@@ -7,7 +7,7 @@
 
 
 void QR(Matrix &A, Matrix &Q, Matrix &R);
-void FindLeadElement(Matrix &A, Matrix &PC, Matrix &PR);
+void FindLeadElement(Matrix &A, Matrix &PC, Matrix &PR, int Minor);
 void SolvePLU(Matrix &L, Matrix &U, Matrix &B, Matrix &X);
 void PLU(Matrix &A, Matrix &L, Matrix &U, Matrix &PC, Matrix &PR);
 Matrix inverse(Matrix &A);

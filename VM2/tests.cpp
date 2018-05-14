@@ -223,9 +223,8 @@ void JacobiVsZ()
 	i = 0;
 	SolveZ(A1, B1, X1, i);
 	
-	std::cout << "count of Z " << i << std::endl
+	std::cout << "count of Z " << i << std::endl;
 
-;
 	SolveJacobi(A1, B1, X1, i);
 
 	std::cout << "count of Jacobi " << i << std::endl;

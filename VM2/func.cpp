@@ -1,8 +1,9 @@
+#pragma once
 #include"func.h"
 #include"Matrix.h"
-void FindLeadElement(Matrix &A, Matrix &PC, Matrix &PR)
+void FindLeadElement(Matrix &A, Matrix &PC, Matrix &PR, int Minor)
 {
-for (int i = 0; i < A.dimM; i++)
+for (int i = Minor; i < A.dimM; i++)
 {
 	double max = 0;
 	int  swapR = -1, swapC = -1;
@@ -73,29 +74,35 @@ void PLU(Matrix &A, Matrix &L, Matrix &U, Matrix &PC, Matrix &PR)
 
 
 
-	FindLeadElement(U, PC, PR);
+	
 
 	for (int k = 0; k < A.dimN; k++)
 	{
-		//  FindLead
-		for (int i = k; i < A.dimN; i++)
-		{
-
-			for (int j = i; j < A.dimM; j++)
-			{
-				//заполнятть текущий
-				L[j][i] = U[j][i] / U[i][i];
-			}
-		}
+		FindLeadElement(U, PC, PR, k);
 		//std::cout << "matrix L " << k;
 		//L.show();
 		//U.show();
-
-		for (int i = k + 1; i < A.dimM; i++)
-			for (int j = k; j < A.dimN; j++)
-				U[i][j] = U[i][j] - L[i][k] * U[k][j];
+		
+		for (int i = k+1 ; i < A.dimM; i++)
+		{
+			U[i][k] = U[i][k] / U[k][k];
+			for (int j = k+1; j < A.dimN; j++)
+				U[i][j] = U[i][j] - U[i][k] * U[k][j];
+		}
+		
 		//std::cout << "matrix U " << k;
 		//U.show();
+	}
+	for (int i = 0; i < A.dimM; ++i)
+	{
+		L[i][i] = 1;
+		for (int j = 0; j < A.dimM; ++j)
+			if (i > j)
+			{
+				L[i][j] = U[i][j];
+				U[i][j] = 0;
+			}
+			
 	}
 }
 Matrix inverse(Matrix &A)
@@ -196,6 +203,11 @@ void SolveJacobi(Matrix &A, Matrix &B, Matrix &X,int &Debug_Count)
 		//X.show();
 
 		Debug_Count++;
+		if (Debug_Count == 1000)
+		{
+			std::cout<< "Jacobi error \n";
+			return;
+		}
 	} while (norm>Eps);	
 	
 }

@@ -1,3 +1,4 @@
+#pragma once
 #include<iostream>
 #include<math.h>
 #include<vector>
@@ -69,6 +70,16 @@ const Matrix Matrix::operator=(const Matrix &A)
 			mas[i][j] = A.mas[i][j];
 	return *this;
 }
+const Matrix Matrix::operator=(const double inMas[])
+{
+	for (int i=0;i<dimM;++i)
+		for (int j = 0; j < dimN; ++j)
+		{
+			mas[i][j] = inMas[i*dimN + j];
+		}
+	
+	return *this;
+}
 double* Matrix::operator[](int i)const
 {
 	return mas[i];
@@ -101,6 +112,11 @@ Matrix Matrix::operator+(const Matrix & A)
 		for (int j = 0; j < dimN; j++)
 			temp[i][j] = mas[i][j] +A[i][j];
 	return temp;
+}
+//check!
+Matrix Matrix::operator-(Matrix & A)
+{
+	return *this+ A*(-1.0);
 }
 void Matrix::SwapRows(int f, int s)
 {

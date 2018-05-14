@@ -21,17 +21,21 @@ public:
 	//		for (int j = 0; j < n; j++)
 	//			mas[i][j] = 0;
 	//}
+
+
 	Matrix(int M, int N);
 	//Matrix::~Matrix();
 	void show()const;
 	double* operator[](int i)const;
-	bool Matrix::operator==(const Matrix &A);
+	bool operator==(const Matrix &A);
 	
 	const Matrix operator=(const Matrix &A);
+	const Matrix operator=(const double[]);
 	
 	Matrix operator*(const Matrix &A);
 	Matrix operator*(double K);
 	Matrix operator+(const Matrix &A);
+	Matrix operator-( Matrix &A);
 	void randomDP();
 	void random() {
 		for (int i = 0; i < dimM; i++)
